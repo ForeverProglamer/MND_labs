@@ -23,7 +23,8 @@ def main():
     x3_factor, x03, dx3, x3_n = make_experiment()
 
     print(f'X1: {x1_factor}\nX01 = {x01}\nDX1 = {dx1}\nX1n: {x1_n}')
-    print('*' * 42)
+    print('*' * 42) # Множення строкового значення '*' на цілочисельне 42 потрібне для повторення строки '*' рівно 42 рази.
+                    # Те саме, що конкатенувати між собою сорок дві строки '*'.
     print(f'X2: {x2_factor}\nX02 = {x02}\nDX2 = {dx2}\nX2n: {x2_n}')
     print('*' * 42)
     print(f'X3: {x3_factor}\nX03 = {x03}\nDX3 = {dx3}\nX3n: {x3_n}')
