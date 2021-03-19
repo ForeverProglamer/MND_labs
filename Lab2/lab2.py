@@ -9,11 +9,25 @@ def normalize(array):
     return normalized
 
 
+# Підбір найближчого значення для m
+def find_closest(m, table):
+    key_list = list(table.keys())
+    if m in key_list:
+        return m
+    else:
+        diffs = ([abs(m-i) for i in key_list])
+        index = diffs.index(min(diffs))
+        return key_list[index]
+
+
 def main(m):
     var = 127
     y_max = (30 - var) * 10
     y_min = (20 - var) * 10
     print(f'y_max = {y_max}, y_min = {y_min}')
+
+    # Таблиця з критеріями Романовського для p = 0.99
+    romanovski_values_table = {2: 1.73, 6: 2.16, 8: 2.43, 10: 2.62, 12: 2.75, 15: 2.9, 20: 3.08}
 
     x1 = [-40, randint(-40, 20), 20]
     x2 = [-25, randint(-25, 10), 10]
@@ -30,16 +44,19 @@ def main(m):
 
     y_average = []
     dispersions = []
-    for i in range(3):
-        y_current = (matrix_of_experiments[0][i] + matrix_of_experiments[1][i] +
-                     matrix_of_experiments[2][i] + matrix_of_experiments[3][i] +
-                     matrix_of_experiments[4][i]) / len(matrix_of_experiments)
+
+    for i in range(len(matrix_of_experiments[0])):
+        sum1 = 0
+        for j in range(m):
+            sum1 += matrix_of_experiments[j][i]
+
+        y_current = sum1 / len(matrix_of_experiments)
         y_average.append(y_current)
 
-        disp = ((matrix_of_experiments[0][i] - y_current) ** 2 + (matrix_of_experiments[1][i] - y_current) ** 2 +
-                (matrix_of_experiments[2][i] - y_current) ** 2 + (matrix_of_experiments[3][i] - y_current) ** 2 +
-                (matrix_of_experiments[4][i] - y_current) ** 2) / m
-        dispersions.append(disp)
+        sum2 = 0
+        for k in range(m):
+            sum2 += (matrix_of_experiments[k][i] - y_current) ** 2
+        dispersions.append(sum2 / m)
 
     print(f'Y average: {y_average}')
     print(f'Dispersions: {dispersions}')
@@ -68,9 +85,13 @@ def main(m):
     print(f'0uv: {theta_uv}')
     print(f'Ruv: {r_uv}')
 
+    r_kr = romanovski_values_table[find_closest(m, romanovski_values_table)]
+    print(f'При m = {m} для p = 0.99 Rkr = {r_kr}')
     for i in r_uv:
-        if i >= 2:
+        if i >= r_kr:
             print('Дисперсії неоднорідні')
+            print(f'Проводимо експеримент при m = {m+1}')
+            main(m+1)
             exit()
     print('Дисперсії однорідні')
 
