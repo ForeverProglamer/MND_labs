@@ -1,4 +1,5 @@
 from random import randint
+from scipy.stats import t
 import csv
 
 
@@ -67,10 +68,13 @@ def students_test(x0_plan1, x1_plan1, x2_plan1, x3_plan1, y_avg_arr, dispersion,
     print('t:', t_arr)
 
     # f3 = f1*f2 = 2*8 = 16
-    # З таблиці беремо значення 2.120
+    f1 = m - 1
+    f2 = 8
+    f3 = f1 * f2
+
     b_arr = []
     for i in range(len(t_arr)):
-        if t_arr[i] > 2.120:
+        if t_arr[i] > t.ppf(q=0.975, df=f3):
             b_arr.append(t_arr[i])
         else:
             print(f'Коефіцієнт b{i} приймаємо не значним')
