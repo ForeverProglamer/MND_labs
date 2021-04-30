@@ -359,6 +359,17 @@ def main(m=3):
             print(f'ŷ = {y}')
             y_res.append(y)
 
+        insignificant_coefs = []
+        for i in range(len(b_list)):
+            if b_arr[i] == 0:
+                if i == 0:
+                    part = f'b{i}'
+                else:
+                    part = f'b{i}*x{i}'
+                insignificant_coefs.append(part)
+        print('Рівняння із незначимимх коефіцієнтів')
+        print('y = ' + ' + '.join(insignificant_coefs))
+
         fishers_test(b_arr, s2b, y_avg, y_res, m)
     else:
         main(m+1)
