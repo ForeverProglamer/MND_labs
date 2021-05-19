@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,10 +28,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int n = Integer.parseInt(editText.getText().toString());
+
+                long startTime = System.nanoTime();
+
                 FermMethod method = new FermMethod(n);
                 int[] res = method.run();
+
+                long endTime = System.nanoTime();
+
+                long time = endTime - startTime;
+                String timeElapsed = "Час затрачений на пошук відповіді: " + time/1_000_000.0 + " ms";
+
                 String resultText = "Результат: n = " + res[0] + " * " + res[1];
                 result.setText(resultText);
+
+                Toast toast = Toast.makeText(getApplicationContext(), timeElapsed , Toast.LENGTH_LONG);
+                toast.show();
             }
         });
     }
